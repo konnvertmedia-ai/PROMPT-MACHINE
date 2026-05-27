@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)file:///C:/Users/My%20PC/Downloads/konnvert-prompt-machine_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konnvert Prompt Machine</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --acc: #e8ff47;
+    --acc2: #ff6b35;
+    --bg: #0a0a0a;
+    --bg1: #111;
+    --bg2: #1a1a1a;
+    --bg3: #242424;
+    --border: #2a2a2a;
+    --border2: #333;
+    --txt: #f0f0f0;
+    --muted: #666;
+    --muted2: #888;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: var(--font);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  a { color: var(--acc); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .header {
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--acc);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0a0a0a;
+    letter-spacing: -0.5px;
+  }
+  .logo-text {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--txt);
+  }
+  .logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .badge-ver {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    color: var(--muted2);
+    letter-spacing: 0.5px;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 3rem 0 2.5rem;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--acc);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--txt);
+  }
+  .hero-title span { color: var(--acc); }
+  .hero-desc {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* TABS */
+  .tab-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+    padding-bottom: 0;
+  }
+  .tab {
+    font-size: 11px;
+    padding: 8px 14px;
+    cursor: pointer;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -0.5px;
+    transition: all 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--txt); }
+  .tab.on { color: var(--acc); border-bottom-color: var(--acc); }
+  .cnt-badge {
+    font-size: 9px;
+    background: var(--bg3);
+    color: var(--muted);
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin-left: 4px;
+  }
+
+  /* SECTION HEADERS */
+  .sec {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--acc);
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+    margin: 20px 0 12px;
+  }
+  .sec:first-child { margin-top: 0; }
+
+  /* TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .tag {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--muted2);
+    transition: all 0.12s;
+    letter-spacing: 0.3px;
+    user-select: none;
+  }
+  .tag:hover { border-color: #555; color: var(--txt); }
+  .tag.on { background: var(--acc); color: #0a0a0a; border-color: var(--acc); font-weight: 600; }
+
+  /* FORM */
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (max-width: 600px) {
+    .row2, .row3 { grid-template-columns: 1fr; }
+  }
+  .field label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: var(--bg2);
+    border: 0.5px solid var(--border2);
+    border-radius: 8px;
+    color: var(--txt);
+    font-size: 13px;
+    padding: 10px 12px;
+    font-family: var(--font);
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--muted); }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus { border-color: var(--acc); }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .field { margin-bottom: 0; }
+
+  /* BUTTON */
+  .btn-gen {
+    width: 100%;
+    background: var(--acc);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: opacity 0.15s, transform 0.1s;
+    font-family: var(--font);
+  }
+  .btn-gen:hover { opacity: 0.88; }
+  .btn-gen:active { transform: scale(0.99); }
+  .btn-gen:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* OUTPUT */
+  .out-wrap { margin-top: 20px; display: none; }
+  .out-wrap.show { display: block; }
+  .action-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .abtn {
+    font-size: 11px;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--muted2);
+    letter-spacing: 0.5px;
+    transition: all 0.12s;
+    font-family: var(--font);
+  }
+  .abtn:hover { border-color: var(--acc); color: var(--acc); }
+  .abtn.saved { background: var(--acc); color: #0a0a0a; border-color: var(--acc); font-weight: 600; }
+  .out-box {
+    background: var(--bg1);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+  }
+  .out-box pre {
+    font-size: 12px;
+    line-height: 1.75;
+    color: #d0d0d0;
+    white-space: pre-wrap;
+    font-family: var(--mono);
+    word-break: break-word;
+  }
+
+  /* LOADING */
+  .loading {
+    font-size: 11px;
+    color: var(--acc);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 0;
+    display: none;
+  }
+  .loading.show { display: flex; align-items: center; gap: 8px; }
+  .loading::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--acc);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* SCHEMA */
+  .schema-card {
+    background: var(--bg1);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .schema-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .schema-pill {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .schema-type {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .param-row {
+    display: flex;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 11.5px;
+    font-family: var(--mono);
+    line-height: 1.5;
+  }
+  .param-row:last-of-type { border-bottom: none; }
+  .param-key { color: var(--acc); min-width: 140px; flex-shrink: 0; }
+  .param-val { color: #aaa; }
+  .schema-rules { margin-top: 10px; }
+  .schema-rule {
+    font-size: 11px;
+    color: var(--muted2);
+    padding: 2px 0;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .schema-rule::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+  .schema-avoid {
+    font-size: 10px;
+    color: #ff4444;
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: rgba(255,68,68,0.06);
+    border-radius: 4px;
+    border: 0.5px solid rgba(255,68,68,0.15);
+    font-family: var(--mono);
+  }
+
+  /* HISTORY */
+  .hist-item {
+    background: var(--bg1);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.12s;
+  }
+  .hist-item:hover { border-color: var(--border2); }
+  .hist-meta { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 4px; }
+  .hist-preview { font-size: 11px; color: var(--muted2); line-height: 1.5; font-family: var(--mono); }
+  .hist-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+  .hist-del {
+    font-size: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 0.5px solid var(--border);
+    background: var(--bg2);
+    transition: all 0.12s;
+    font-family: var(--font);
+  }
+  .hist-del:hover { border-color: #ff4444; color: #ff4444; }
+  .empty { font-size: 12px; color: var(--muted); padding: 20px 0; text-align: center; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 0.5px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+  .footer span { color: var(--acc); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">K</div>
+    <div>
+      <div class="logo-text">KONNVERT</div>
+      <div class="logo-sub">Prompt Machine</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge-ver">v2.0</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-eyebrow">AI Creative Production</div>
+    <h1 class="hero-title">Generate <span>production-ready</span><br>prompts instantly</h1>
+    <p class="hero-desc">Built for Kling, Nano Banana, HeyGen, Higgsfield, Grok, and Flow. Strict schemas, scene breakdowns, clipboard history.</p>
+  </div>
+
+  <div class="tab-row" id="mainTabs">
+    <div class="tab on" data-tab="build">Build prompt</div>
+    <div class="tab" data-tab="schema">Tool schemas</div>
+    <div class="tab" data-tab="history">History <span class="cnt-badge" id="histCount">0</span></div>
+  </div>
+
+  <!-- BUILD TAB -->
+  <div id="tabBuild">
+
+    <div class="sec">Target tool</div>
+    <div class="tags" id="tools">
+      <span class="tag on" data-v="kling">Kling 3.0</span>
+      <span class="tag" data-v="nano">Nano Banana</span>
+      <span class="tag" data-v="heygen">HeyGen</span>
+      <span class="tag" data-v="higgsfield">Higgsfield</span>
+      <span class="tag" data-v="grok">Grok</span>
+      <span class="tag" data-v="flow">Flow</span>
+    </div>
+
+    <div class="sec">Content type</div>
+    <div class="tags" id="types">
+      <span class="tag on" data-v="ugc">UGC Ad</span>
+      <span class="tag" data-v="product">Product Ad</span>
+      <span class="tag" data-v="cinematic">Cinematic</span>
+      <span class="tag" data-v="pixar">Pixar 3D</span>
+      <span class="tag" data-v="claymation">Claymation</span>
+      <span class="tag" data-v="interview">Interview</span>
+      <span class="tag" data-v="podcast">Podcast</span>
+      <span class="tag" data-v="avatar">AI Avatar</span>
+      <span class="tag" data-v="hook">Hook Visual</span>
+      <span class="tag" data-v="product_still">Product Still</span>
+    </div>
+
+    <div class="sec">Brief</div>
+    <div class="row2">
+      <div class="field"><label>Product / Brand</label><input type="text" id="product" placeholder="e.g. WLP-1 by Absorption Co."></div>
+      <div class="field"><label>Target audience</label><input type="text" id="audience" placeholder="e.g. Women 30-50, weight loss"></div>
+    </div>
+    <div class="row3">
+      <div class="field">
+        <label>Format</label>
+        <select id="format">
+          <option value="9:16">9:16 Vertical</option>
+          <option value="1:1">1:1 Square</option>
+          <option value="4:5">4:5 Feed</option>
+          <option value="16:9">16:9 Wide</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Duration</label>
+        <select id="duration">
+          <option value="5s">5 sec</option>
+          <option value="8s">8 sec</option>
+          <option value="10s">10 sec</option>
+          <option value="15s" selected="">15 sec</option>
+          <option value="30s">30 sec</option>
+          <option value="60s">60 sec</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Scenes</label>
+        <select id="scenes">
+          <option value="1">1 scene</option>
+          <option value="3" selected="">3 scenes</option>
+          <option value="5">5 scenes</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:16px">
+      <label>Script / Hook / Concept</label>
+      <textarea id="idea" placeholder="Paste your script, hook line, or describe the visual concept..."></textarea>
+    </div>
+
+    <div class="sec">Modifiers</div>
+    <div class="tags" id="mods">
+      <span class="tag" data-v="realistic">Max realism</span>
+      <span class="tag" data-v="native">Native UGC feel</span>
+      <span class="tag on" data-v="consistency">Consistency lock</span>
+      <span class="tag" data-v="handheld">Handheld cam</span>
+      <span class="tag on" data-v="negative">Negative prompt</span>
+      <span class="tag" data-v="safe_zone">Safe zone</span>
+      <span class="tag" data-v="ref_image">Ref image mode</span>
+      <span class="tag" data-v="cta">CTA shot</span>
+    </div>
+
+    <button class="btn-gen" id="genBtn">Generate Prompt</button>
+    <div class="loading" id="loading">Generating prompt</div>
+
+    <div class="out-wrap" id="outWrap">
+      <div class="sec">Output</div>
+      <div class="action-row">
+        <button class="abtn" id="copyBtn">Copy prompt</button>
+        <button class="abtn" id="saveBtn">Save to history</button>
+      </div>
+      <div class="out-box"><pre id="outText"></pre></div>
+    </div>
+
+  </div>
+
+  <!-- SCHEMA TAB -->
+  <div id="tabSchema" style="display:none">
+    <div class="sec">Strict schema per tool</div>
+    <div id="schemaContent"></div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="tabHistory" style="display:none">
+    <div class="sec">Saved prompts</div>
+    <div id="histList"><div class="empty">No saved prompts yet. Generate and save a prompt to see it here.</div></div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  Built by <span>KONNVERT</span> — AI video production for DTC brands
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let history_=JSON.parse(localStorage.getItem('kpm_history')||'[]');
+let lastPrompt='';
+let lastMeta={};
+
+function saveStorage(){ try{ localStorage.setItem('kpm_history',JSON.stringify(history_)); }catch(e){} }
+function updateHistCount(){ $('histCount').textContent=history_.length; }
+updateHistCount();
+
+function initTags(id,multi){
+  $(id).querySelectorAll('.tag').forEach(t=>{
+    t.onclick=()=>{
+      if(!multi){
+        $(id).querySelectorAll('.tag').forEach(x=>x.classList.remove('on'));
+        t.classList.add('on');
+      } else { t.classList.toggle('on'); }
+    };
+  });
+}
+initTags('tools',false);
+initTags('types',false);
+initTags('mods',true);
+
+$('mainTabs').querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    $('mainTabs').querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    ['Build','Schema','History'].forEach(n=>{ $('tab'+n).style.display='none'; });
+    $('tab'+t.dataset.tab.charAt(0).toUpperCase()+t.dataset.tab.slice(1)).style.display='block';
+    if(t.dataset.tab==='schema') renderSchemas();
+    if(t.dataset.tab==='history') renderHistory();
+  };
+});
+
+const SCHEMAS={
+  kling:{
+    name:'Kling 3.0',color:'#ff6b35',type:'Video generation',
+    params:[
+      {k:'prompt',v:'[Subject + action + camera movement + lighting + environment]'},
+      {k:'negative_prompt',v:'[distorted faces, extra fingers, flickering, bad anatomy...]'},
+      {k:'aspect_ratio',v:'16:9 | 9:16 | 1:1'},
+      {k:'duration',v:'5 | 10  (seconds max per clip)'},
+      {k:'mode',v:'std | pro  (pro = higher quality, slower)'},
+      {k:'cfg_scale',v:'0.5  (prompt adherence, default 0.5)'},
+      {k:'start_frame',v:'[Upload reference image — required for character/product consistency]'},
+    ],
+    rules:['Max 10s per clip. Chain clips for longer sequences.','Upload start_frame image for character and product consistency.','Motion-first language: "walks toward camera", "hand reaches for product".','Describe movement explicitly — static prompts produce poor video results.','Use 9:16 for TikTok/Reels, 16:9 for YouTube/desktop.'],
+    avoid:'static prompts with no movement, missing start_frame for character work, vague scene description'
+  },
+  nano:{
+    name:'Nano Banana Pro',color:'#e8ff47',type:'Image generation',
+    params:[
+      {k:'prompt',v:'[Subject] — [Setting] — [Lighting] — [Camera/Lens] — [Style] — [Mood]'},
+      {k:'negative_prompt',v:'[blurry, low quality, watermark, extra limbs, distorted...]'},
+      {k:'aspect_ratio',v:'1:1 | 16:9 | 9:16 | 4:3 | 3:4'},
+      {k:'reference_image',v:'[Upload product or character reference — URL or file]'},
+      {k:'style_strength',v:'0-100  (how closely to follow reference style)'},
+      {k:'seed',v:'[Lock seed for consistency across a series of images]'},
+    ],
+    rules:['Unlimited free tier — batch multiple variations per session.','Reference image for product accuracy and face consistency.','Lock seed to maintain consistent results across a series.','Comma-separated descriptors work well: "soft diffused light, 50mm lens, shallow DOF".','Be specific about lighting, lens, framing — avoid vague prompts.'],
+    avoid:'vague prompts, missing lighting direction, no reference image for faces or products'
+  },
+  heygen:{
+    name:'HeyGen',color:'#7c5cfc',type:'AI avatar video',
+    params:[
+      {k:'avatar_id',v:'[Your avatar ID from HeyGen dashboard]'},
+      {k:'voice_id',v:'[Your voice ID or cloned voice ID]'},
+      {k:'script',v:'[Dialogue — max 20 words per line, plain language, no special characters]'},
+      {k:'background',v:'[Color hex | image URL | green screen | transparent]'},
+      {k:'aspect_ratio',v:'9:16 | 16:9 | 1:1'},
+      {k:'caption',v:'true | false'},
+      {k:'caption_style',v:'[Font style ID from HeyGen caption library]'},
+    ],
+    rules:['Scripts must be plain, conversational, no special characters.','Keep each line under 20 words for natural pacing.','Use ellipsis (...) or comma for pauses. No em dashes.','Test voice speed — default is often too fast. Set rate to 0.9.','Use transparent background and composite in editor for flexibility.'],
+    avoid:'long complex sentences, em dashes, special characters in script, missing avatar_id'
+  },
+  higgsfield:{
+    name:'Higgsfield',color:'#1a9fff',type:'AI video (multi-model)',
+    params:[
+      {k:'model',v:'soul_2 | seedance_2_0 | kling3_0 | cinematic_studio_3_0 | nano_banana_2'},
+      {k:'prompt',v:'[Detailed motion + character + environment + camera description]'},
+      {k:'soul_id',v:'[Trained Soul ID — required for soul_2 model only]'},
+      {k:'medias[].value',v:'[Reference image UUID or job_id from prior generation]'},
+      {k:'medias[].role',v:'start_image | end_image | image | reference'},
+      {k:'aspect_ratio',v:'9:16 | 16:9 | 1:1 | 4:5'},
+      {k:'duration',v:'5 | 8 | 10  (seconds, model-dependent)'},
+    ],
+    rules:['soul_2 requires a trained Soul ID — train first with 5-20 photos (~10 min).','seedance_2_0 is best for reference-driven consistent character video.','kling3_0 REQUIRES start_image in medias — no start_image means no reference.','Use element placeholders <<<UUID>>> in prompt for reference elements.','Cinema Studio 3.0 is best for high-quality cinematic product ads.'],
+    avoid:'soul_2 without trained soul_id, kling3_0 without start_image, missing medias role field'
+  },
+  grok:{
+    name:'Grok (Aurora)',color:'#00d4aa',type:'Image generation',
+    params:[
+      {k:'prompt',v:'[Natural language — scene, subject, lighting, mood, style, camera]'},
+      {k:'aspect_ratio',v:'1:1 | 16:9 | 9:16 | 4:3 | 3:2'},
+      {k:'count',v:'1-4  (number of variations to generate)'},
+    ],
+    rules:['Natural language works best — no special syntax needed.','Strong at photorealism. Describe real-world lighting and textures in detail.','Add "shot on [camera model]" for photographic realism.','Specify lens: "85mm portrait lens, f/1.8, shallow depth of field".','Handles complex scene descriptions well — be as detailed as needed.'],
+    avoid:'overly technical syntax, hashtag-style prompts, very short vague descriptions'
+  },
+  flow:{
+    name:'Flow (Sora)',color:'#ff9500',type:'Video generation',
+    params:[
+      {k:'prompt',v:'[Detailed scene — subject + action + environment + camera + lighting]'},
+      {k:'negative_prompt',v:'[blurry, low quality, unrealistic motion, distorted faces...]'},
+      {k:'aspect_ratio',v:'16:9 | 9:16 | 1:1'},
+      {k:'duration',v:'5 | 10 | 20  (seconds)'},
+      {k:'resolution',v:'480p | 720p | 1080p'},
+      {k:'storyboard',v:'[Optional — describe each shot separately for multi-scene output]'},
+    ],
+    rules:['Flow supports up to 20s clips — ideal for full ad sequences.','Storyboard mode: describe each shot separately for multi-scene control.','Specify camera moves explicitly: "slow dolly forward", "aerial pull back".','Excels at environmental and cinematic shots. Strong motion quality.','For product ads: describe the product interaction in precise physical detail.'],
+    avoid:'missing camera direction, no motion verbs in prompt, unclear environment description'
+  }
+};
+
+const TYPE_TEMPLATES={
+  ugc:{cam:'Handheld vertical phone camera, slight natural shake, organic movement',light:'Natural daylight or warm indoor ambient, no studio setup',feel:'Authentic, casual, native TikTok/Instagram feel, slightly imperfect',avoid:'Studio lighting, fake influencer energy, overproduced polish, robotic expressions'},
+  product:{cam:'Clean product close-up, shallow depth of field, macro detail on texture',light:'Soft product lighting, specular highlights on texture, no harsh shadows',feel:'Premium, minimal, tactile, detail-focused, e-commerce ready',avoid:'Distorted packaging, wrong label color, changed logo, invented product features'},
+  cinematic:{cam:'Cinematic wide or medium shot, subtle dolly, shallow depth of field',light:'Golden hour or motivated practical light, film color grade, cinematic LUT',feel:'Film-quality, emotionally driven, high production value',avoid:'Flat lighting, TV soap look, unstable framing, blown highlights'},
+  pixar:{cam:'Medium shot, smooth follow movement, warm focal length',light:'Soft volumetric studio lighting, subtle rim light, warm key light',feel:'High-end 3D animated family-film style, expressive, polished render quality',avoid:'Sharp CGI seams, uncanny valley faces, dark or gritty tone, rigid movement'},
+  claymation:{cam:'Static or slow pan, table-height angle, practical miniature set framing',light:'Soft overhead studio light, warm tungsten tones',feel:'Handmade clay texture, visible fingerprints, stop-motion charm, tactile materials',avoid:'Smooth digital CGI finish, fast motion, realistic skin texture, computer-clean look'},
+  interview:{cam:'Handheld or tripod, medium close-up, subject slightly off-center',light:'Natural daylight or mixed street light, no on-camera flash',feel:'Street-level authentic, real crowd background, casual natural delivery',avoid:'Green screen, studio backdrop, scripted delivery look, empty background'},
+  podcast:{cam:'Multi-cam feel, medium shot on host and guest, slight push-in on key moments',light:'Warm podcast studio, practical desk lamp, subtle back light for separation',feel:'Real conversation energy, natural hand gestures, believable set design',avoid:'Empty set, robotic stillness, missing microphones, greenscreen background'},
+  avatar:{cam:'Eye-level talking head, vertical 9:16, clean or branded background',light:'Front fill light, no harsh shadows on face, slight rim for separation',feel:'Professional but approachable, natural eye contact, lip sync accuracy critical',avoid:'Dead eyes, bad lip sync, frozen expression, mismatched skin tone'},
+  hook:{cam:'Extreme close-up or strong pattern-interrupt wide shot, immediate visual tension',light:'High contrast, bold visual energy, attention-grabbing lighting',feel:'Scroll-stopping first frame, immediate visual tension, strong motion',avoid:'Boring composition, slow reveal, generic stock footage feel'},
+  product_still:{cam:'45-degree hero angle or flat lay, tight crop on product',light:'3-point product light, clean specular highlights, neutral or gradient background',feel:'E-commerce ready, sharp label detail, premium material texture visible',avoid:'Blurry label text, wrong packaging color, props covering product, dark shadows on label'}
+};
+
+function buildPrompt(tool,type,product,audience,format,duration,sceneCount,idea,mods){
+  const tc=SCHEMAS[tool]||SCHEMAS.kling;
+  const tt=TYPE_TEMPLATES[type]||TYPE_TEMPLATES.ugc;
+  const isVideo=tc.type.includes('video')||tc.type.includes('avatar');
+  const hasRef=mods.includes('ref_image');
+  const hasNeg=mods.includes('negative');
+  const hasLock=mods.includes('consistency');
+  const hasRealism=mods.includes('realistic');
+  const hasNative=mods.includes('native');
+  const hasHand=mods.includes('handheld');
+  const hasSafe=mods.includes('safe_zone');
+  const hasCta=mods.includes('cta');
+
+  let out='';
+  out+=`TOOL: ${tc.name}  |  TYPE: ${type.toUpperCase()}  |  FORMAT: ${format}  |  DURATION: ${duration}\n`;
+  if(product) out+=`PRODUCT: ${product}\n`;
+  if(audience) out+=`AUDIENCE: ${audience}\n`;
+  out+='\n';
+  out+=`━━━ MASTER PROMPT ━━━\n\n`;
+  if(idea) out+=`${idea}\n\n`;
+  if(isVideo){
+    out+=`Camera: ${tt.cam}.\n`;
+    out+=`Lighting: ${tt.light}.\n`;
+    if(hasHand||type==='ugc'||type==='interview') out+=`Movement: Handheld, natural micro-shake, authentic organic motion.\n`;
+  }
+  out+=`Visual feel: ${tt.feel}.\n`;
+  if(product){
+    out+=`\nProduct: ${product}. Preserve exact product shape, label detail, material texture, color accuracy, and logo placement. Do not alter packaging design or invent features.\n`;
+  }
+  if(audience) out+=`Audience: ${audience}. Talent, setting, and emotion must feel authentic to this viewer.\n`;
+  if(hasRef){
+    out+=`\nRef images attached. Follow reference closely for framing, composition, lighting, character facial structure, wardrobe, product appearance, material texture, and environment. Preserve subject identity across all frames.\n`;
+  }
+  if(hasRealism){
+    out+=`\nRealism directive: Natural micro-expressions, realistic blinking, subtle body movement, natural hand motion, believable skin texture, fabric folds, accurate shadows, stable anatomy. No plastic skin, robotic movement, surreal background distortion.\n`;
+  }
+  if(hasNative&&(type==='ugc'||type==='interview')){
+    out+=`\nUGC native feel: Filmed on personal smartphone. Slight lens imperfection acceptable. No color grade polish. Natural audio feel. Real person energy throughout.\n`;
+  }
+  if(hasSafe){
+    out+=`\nSafe zone: ${format} composition. Subject centered within TikTok, Reels, and Shorts safe zones. Space for captions without covering face or product.\n`;
+  }
+
+  if(isVideo&&sceneCount>1){
+    out+=`\n━━━ SCENE BREAKDOWN ━━━\n\n`;
+    getScenes(type,sceneCount,product,idea).forEach((s,i)=>{
+      out+=`Scene ${i+1} (${s.dur})\n`;
+      out+=`Visual: ${s.visual}\n`;
+      out+=`Action: ${s.action}\n`;
+      out+=`Camera: ${s.cam}\n`;
+      if(s.vo) out+=`VO: ${s.vo}\n`;
+      if(s.text) out+=`On-screen text: ${s.text}\n`;
+      out+='\n';
+    });
+  }
+
+  if(hasLock&&isVideo){
+    out+=`━━━ CONSISTENCY LOCK ━━━\nMaintain same character identity, facial structure, hairstyle, wardrobe, body proportions, product design, lighting direction, color grade, and environment continuity across ALL shots. Do not change subject, outfit, product, or background between scenes.\n\n`;
+  }
+
+  if(hasNeg){
+    out+=`━━━ NEGATIVE PROMPT ━━━\n`;
+    out+=buildNeg(type,tc.type)+'\n\n';
+  }
+
+  out+=`━━━ ${tc.name.toUpperCase()} SCHEMA ━━━\n`;
+  tc.params.forEach(p=>{ out+=`${p.k}: ${p.v}\n`; });
+  out+=`\nExecution rules:\n`;
+  tc.rules.forEach((r,i)=>{ out+=`${i+1}. ${r}\n`; });
+  out+=`\nAvoid: ${tc.avoid}`;
+
+  return out;
+}
+
+function getScenes(type,count,product,idea){
+  const p=product||'the product';
+  const sceneMap={
+    ugc:[
+      {dur:'2-3s',visual:'Creator in natural environment, direct to camera',action:'Hook expression, slight lean forward toward camera',cam:'Handheld close-up, eye-level',vo:idea?'Hook: '+idea.slice(0,55):'Hook line, direct address, conversational tone',text:'Hook text overlay'},
+      {dur:'4-5s',visual:'Creator holding or demonstrating '+p,action:'Real product interaction, pointing to key feature naturally',cam:'Pull back slightly to show product and face together',vo:'Problem and before state description',text:'Pain point callout'},
+      {dur:'3-4s',visual:'Close-up of '+p+' then back to creator',action:'Show result or transformation moment, genuine reaction',cam:'Cut between product macro close-up and creator reaction shot',vo:'Personal result, win moment, specific detail',text:'Benefit claim'},
+      {dur:'2s',visual:'Creator confident, direct to camera, slight smile',action:'CTA delivery, natural and direct',cam:'Back to tight close-up',vo:'Call to action line',text:'CTA + offer'},
+      {dur:'2s',visual:'Product hero shot or brand card',action:'Static product close or logo reveal',cam:'Clean 45-degree angle, sharp focus',vo:'',text:'Brand + URL'}
+    ],
+    product:[
+      {dur:'3s',visual:p+' entering frame, clean background',action:'Product slides or drops into hero position',cam:'45-degree hero angle, slow push-in',vo:'',text:'Product name'},
+      {dur:'4s',visual:'Hands interacting with '+p+', macro texture detail',action:'Open, apply, or use product naturally',cam:'Macro close-up, rack focus on key feature or texture',vo:'Key benefit line',text:'Key benefit'},
+      {dur:'4s',visual:'Before/after moment or transformation visual',action:'Clear result demonstration, visual proof',cam:'Clean reveal cut or split screen',vo:'Result description',text:'Result claim'},
+      {dur:'3s',visual:p+' hero shot with branding visible',action:'Product holds in final position, sharp focus',cam:'Clean 45-degree final frame',vo:'CTA line',text:'CTA + offer'},
+      {dur:'2s',visual:'Logo or brand lockup',action:'Brand card fades in clean',cam:'Static',vo:'',text:'Website or social handle'}
+    ],
+    cinematic:[
+      {dur:'3s',visual:'Wide establishing shot of the environment',action:'Environment reveals character or product from distance',cam:'Cinematic wide shot, slow dolly forward',vo:'Ambient sound or music swell',text:''},
+      {dur:'4s',visual:'Character in environment, emotional close moment',action:'Subtle facial expression, purposeful movement',cam:'Medium close-up, shallow depth of field',vo:'Voiceover narration, first person',text:'Thematic title or question'},
+      {dur:'5s',visual:'Core story or product interaction moment',action:'Peak emotional beat or key product usage moment',cam:'Dynamic tracking shot or intimate handheld',vo:'Key copy line',text:'Core message'},
+      {dur:'3s',visual:'Resolution or transformation visual',action:'Outcome shown clearly, positive emotion',cam:'Wide pull back or slow zoom out',vo:'Closing line',text:'CTA'},
+      {dur:'2s',visual:'Brand card or logo',action:'Logo reveals clean',cam:'Static',vo:'',text:'Tagline + URL'}
+    ]
+  };
+  const base=sceneMap[type]||sceneMap.ugc;
+  return base.slice(0,count);
+}
+
+function buildNeg(type,toolType){
+  let n='distorted faces, extra fingers, weird hands, bad anatomy, warped body proportions, broken limbs, floating objects, misaligned eyes';
+  if(toolType.includes('video')||toolType.includes('avatar')) n+=', unstable flickering, glitchy transitions, inconsistent wardrobe between cuts, inconsistent character identity, unnatural robotic movement, dead eyes, bad lip sync, frame stutter';
+  if(type==='ugc'||type==='interview') n+=', studio lighting, fake influencer energy, overproduced commercial polish, green screen artifacts, corporate stiffness';
+  if(type==='product'||type==='product_still') n+=', wrong label text, distorted packaging, incorrect logo placement, changed product color, invented packaging features';
+  n+=', plastic skin, overly smooth texture, AI watermark, surreal background distortion, overexposed highlights, low resolution texture, soft focus on subject';
+  return n;
+}
+
+function getSelected(id){ return [...$(id).querySelectorAll('.tag.on')].map(t=>t.dataset.v); }
+
+$('genBtn').onclick=async function(){
+  const tool=getSelected('tools')[0]||'kling';
+  const type=getSelected('types')[0]||'ugc';
+  const product=$('product').value.trim();
+  const audience=$('audience').value.trim();
+  const format=$('format').value;
+  const duration=$('duration').value;
+  const scenes=parseInt($('scenes').value)||3;
+  const idea=$('idea').value.trim();
+  const mods=getSelected('mods');
+
+  $('loading').classList.add('show');
+  $('genBtn').disabled=true;
+  $('outWrap').classList.remove('show');
+  await new Promise(r=>setTimeout(r,600));
+
+  const prompt=buildPrompt(tool,type,product,audience,format,duration,scenes,idea,mods);
+  lastPrompt=prompt;
+  lastMeta={tool,type,product:product||'(none)',format,duration,ts:Date.now()};
+
+  $('outText').textContent=prompt;
+  $('loading').classList.remove('show');
+  $('genBtn').disabled=false;
+  $('outWrap').classList.add('show');
+  $('saveBtn').classList.remove('saved');
+  $('saveBtn').textContent='Save to history';
+  $('outWrap').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+$('copyBtn').onclick=function(){
+  navigator.clipboard.writeText(lastPrompt).then(()=>{
+    $('copyBtn').textContent='Copied!';
+    setTimeout(()=>{ $('copyBtn').textContent='Copy prompt'; },2000);
+  });
+};
+
+$('saveBtn').onclick=function(){
+  if(!lastPrompt) return;
+  history_.unshift({...lastMeta,prompt:lastPrompt,id:Date.now()});
+  if(history_.length>50) history_.pop();
+  saveStorage();
+  updateHistCount();
+  $('saveBtn').classList.add('saved');
+  $('saveBtn').textContent='Saved!';
+  setTimeout(()=>{ $('saveBtn').classList.remove('saved'); $('saveBtn').textContent='Save to history'; },2000);
+};
+
+function renderSchemas(){
+  const wrap=$('schemaContent');
+  wrap.innerHTML='';
+  Object.entries(SCHEMAS).forEach(([key,s])=>{
+    const div=document.createElement('div');
+    div.className='schema-card';
+    let html=`<div class="schema-header">`;
+    html+=`<span class="schema-pill" style="background:${s.color}20;color:${s.color};border:0.5px solid ${s.color}40">${s.name}</span>`;
+    html+=`<span class="schema-type">${s.type}</span></div>`;
+    s.params.forEach(p=>{
+      html+=`<div class="param-row"><span class="param-key">${p.k}</span><span class="param-val">${p.v}</span></div>`;
+    });
+    html+=`<div class="schema-rules">`;
+    s.rules.forEach(r=>{ html+=`<div class="schema-rule">${r}</div>`; });
+    html+=`</div>`;
+    html+=`<div class="schema-avoid">Avoid: ${s.avoid}</div>`;
+    div.innerHTML=html;
+    wrap.appendChild(div);
+  });
+}
+
+function renderHistory(){
+  const wrap=$('histList');
+  if(history_.length===0){
+    wrap.innerHTML='<div class="empty">No saved prompts yet. Generate and save a prompt to see it here.</div>';
+    return;
+  }
+  wrap.innerHTML='';
+  history_.forEach((h,idx)=>{
+    const d=new Date(h.ts);
+    const timeStr=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const div=document.createElement('div');
+    div.className='hist-item';
+    div.innerHTML=`<div style="flex:1;min-width:0">
+      <div class="hist-meta">${(h.tool||'').toUpperCase()} — ${h.type||''} — ${h.format||''} — ${h.product||''} — ${timeStr}</div>
+      <div class="hist-preview">${(h.prompt||'').slice(0,130).replace(/\n/g,' ')}...</div>
+    </div>
+    <div class="hist-actions">
+      <button class="abtn" onclick="copyHistItem(${idx})">Copy</button>
+      <button class="hist-del" onclick="delHistItem(${idx})">Delete</button>
+    </div>`;
+    wrap.appendChild(div);
+  });
+}
+
+window.copyHistItem=function(idx){
+  navigator.clipboard.writeText(history_[idx].prompt);
+};
+window.delHistItem=function(idx){
+  history_.splice(idx,1);
+  saveStorage();
+  updateHistCount();
+  renderHistory();
+};
+</script>
+
+
+</body></html>
